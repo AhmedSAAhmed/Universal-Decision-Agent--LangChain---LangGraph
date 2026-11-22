@@ -1,0 +1,39 @@
+{
+  "provider": "incident.co (synthetic)",
+  "updated_at": "2026-11-22T18:00:00Z",
+  "incidents": [
+    {
+      "incident_id": "INC-2026-104",
+      "service": "booking-api",
+      "title": "Elevated 500 Errors on Experience Reservations",
+      "status": "investigating",
+      "severity": "major",
+      "affected_regions": ["Brazil", "LATAM"],
+      "started_at": "2026-11-22T16:15:00Z",
+      "eta_resolution": "2026-11-22T20:00:00Z",
+      "latest_update": "Engineering identified a database connection pool bottleneck on the booking service and is rolling out a fix."
+    },
+    {
+      "incident_id": "INC-2026-103",
+      "service": "payments",
+      "title": "Intermittent Payment Gateway Timeouts",
+      "status": "monitoring",
+      "severity": "minor",
+      "affected_regions": ["Global"],
+      "started_at": "2026-11-22T14:00:00Z",
+      "eta_resolution": "2026-11-22T19:00:00Z",
+      "latest_update": "Gateway failover completed; we are monitoring transaction success rates."
+    },
+    {
+      "incident_id": "INC-2026-101",
+      "service": "auth",
+      "title": "Delayed Password Reset Emails",
+      "status": "resolved",
+      "severity": "minor",
+      "affected_regions": ["Global"],
+      "started_at": "2026-11-21T10:00:00Z",
+      "eta_resolution": "2026-11-21T11:30:00Z",
+      "latest_update": "Email queue backlog cleared; login and password resets are operating normally."
+    }
+  ]
+}

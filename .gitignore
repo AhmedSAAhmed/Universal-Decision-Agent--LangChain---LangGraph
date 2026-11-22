@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local configuration and notebook checkpoints
+.env
+.env.*
+!.env.example
+.ipynb_checkpoints/
+
+# Generated databases and local ticket history
+/solution/data/core/udahub.db*
+/solution/data/external/cultpass.db*
+/solution/data/core/chroma_db/
+/solution/data/core/workflow_memory.sqlite3*

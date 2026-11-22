@@ -1,0 +1,20 @@
+[project]
+name = "universal-decision-agent-langchain"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Your Name", email = "ahmedsalamaq@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.5.9",
+    "langgraph-checkpoint-sqlite>=3.1.3",
+]
+
+[project.scripts]
+universal-decision-agent-langchain = "universal_decision_agent_langchain:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
