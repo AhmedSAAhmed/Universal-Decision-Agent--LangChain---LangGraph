@@ -137,6 +137,7 @@ def _audit_node(db, run_id, ticket_id, node, update):
             run_id, ticket_id, "retrieval", node=node,
             status="error" if retrieval_failed else "supported" if source_ids else "insufficient",
             candidates=update.get("retrieved_articles", []), source_article_ids=source_ids,
+            reason=update.get("escalation_reason"),
         ))
     if node in _SPECIALISTS:
         resolved = update.get("resolved") and not update.get("needs_escalation")

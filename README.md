@@ -4,6 +4,8 @@ A LangGraph customer support workflow for the sample CultPass service. It classi
 
 See the [architecture and routing rules](solution/agentic/design/README.md).
 
+For grading, open the [review evidence and source excerpts](SUBMISSION.md). The setup and app notebooks also retain their verification outputs.
+
 ## Setup
 
 1. Create a Python 3.12 virtual environment and install the notebook dependencies.

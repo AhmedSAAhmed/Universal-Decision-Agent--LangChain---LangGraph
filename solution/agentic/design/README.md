@@ -80,7 +80,7 @@ For other priorities, the graph applies the rules below. It honors a supplied ro
 | A | Confidence below 0.75 or angry sentiment | Route knowledge-only requests to General QA, otherwise select by primary intent |
 | B | Confidence below 0.60, or angry sentiment combined with critical urgency for an intent other than outage | Route knowledge-only requests to General QA, otherwise select by primary intent |
 
-After a specialist runs, the graph escalates when `needs_escalation` is true or `resolved` is false. Otherwise it sends the specialist's draft to the formatter. For general policy, FAQ, and how-to questions, General QA retrieves articles before selecting evidence and uses only verified excerpts in the reply. The state records the source article IDs for that turn. For customer-specific lookups and operations, domain specialists use their operational tools.
+After a specialist runs, the graph escalates when `needs_escalation` is true or `resolved` is false. Otherwise it sends the specialist's draft to the formatter. For general policy, FAQ, and how-to questions, General QA retrieves articles before selecting evidence and uses only verified excerpts in the reply. It requires cosine similarity of at least 0.25 and escalates if all retrieved candidates fall below that cutoff. The state records candidate scores and the verified source article IDs for the turn. For customer-specific lookups and operations, domain specialists use their operational tools.
 
 ### Response and ticket outcome
 

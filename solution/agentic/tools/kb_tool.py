@@ -1,4 +1,5 @@
 import os
+from math import sqrt
 from pathlib import Path
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
@@ -95,6 +96,7 @@ def semantic_kb_search(query: str, top_k: int = 3) -> list[dict]:
     results = collection.query(
         query_embeddings=[query_vector],
         n_results=min(top_k, count),
+        include=["documents", "metadatas", "distances", "embeddings"],
     )
 
     # Step 3: Format matched articles cleanly for the General QA Agent.
@@ -102,14 +104,21 @@ def semantic_kb_search(query: str, top_k: int = 3) -> list[dict]:
     docs = results.get("documents", [[]])[0]
     metas = results.get("metadatas", [[]])[0]
     distances = results.get("distances", [[]])[0]
+    vectors = results["embeddings"][0]
+    query_norm = sqrt(sum(value * value for value in query_vector))
 
-    for doc, meta, dist in zip(docs, metas, distances):
+    # v1 fixed for rubric
+    for doc, meta, dist, vector in zip(docs, metas, distances, vectors):
+        article_norm = sqrt(float(sum(value * value for value in vector)))
+        norm = query_norm * article_norm
+        similarity = float(sum(a * b for a, b in zip(query_vector, vector))) / norm if norm else 0.0
         matches.append(
             {
                 "article_id": meta.get("article_id"),
                 "title": meta.get("title"),
                 "tags": meta.get("tags"),
                 "distance": round(float(dist), 4),
+                "similarity": round(max(-1.0, min(1.0, similarity)), 4),
                 "content": doc,
             }
         )

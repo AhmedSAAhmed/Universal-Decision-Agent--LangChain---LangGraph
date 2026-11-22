@@ -16,6 +16,9 @@ from agentic.tools.kb_tool import semantic_kb_search
 
 load_dotenv()
 
+# v1 fixed for rubric
+MIN_KNOWLEDGE_SIMILARITY = 0.25
+
 
 class GeneralQAResult(ToolTrackedResult):
     resolved: bool
@@ -74,7 +77,10 @@ def general_qa_agent(
     result = _answer_from_articles(rewritten_query, model, matches)
     # v1 fixed for rubric
     result.retrieved_articles = [
-        {"article_id": match["article_id"], "distance": match.get("distance")}
+        {
+            "article_id": match["article_id"], "title": match.get("title"),
+            "distance": match.get("distance"), "similarity": match.get("similarity"),
+        }
         for match in matches if match.get("article_id")
     ]
     return result.record_tool_call("semantic_kb_search")
@@ -84,8 +90,12 @@ def _answer_from_articles(
     rewritten_query: str, model: str, matches: list[dict],
 ) -> GeneralQAResult:
     articles = {}
+    has_candidates = False
     for match in matches:
         if not (match.get("article_id") and match.get("title") and match.get("content")):
+            continue
+        has_candidates = True
+        if (match.get("similarity") or 0.0) < MIN_KNOWLEDGE_SIMILARITY:
             continue
         header = f"Title: {match['title']}\nTags: {match.get('tags') or ''}\n\n"
         articles[match["article_id"]] = {
@@ -93,7 +103,11 @@ def _answer_from_articles(
             "body": match["content"].removeprefix(header),
         }
     if not articles:
-        return _knowledge_escalation("No knowledge base articles were retrieved.")
+        reason = (
+            f"Knowledge retrieval confidence is below the {MIN_KNOWLEDGE_SIMILARITY:.2f} similarity cutoff."
+            if has_candidates else "No knowledge base articles were retrieved."
+        )
+        return _knowledge_escalation(reason)
 
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:

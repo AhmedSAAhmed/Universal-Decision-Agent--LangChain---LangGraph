@@ -20,3 +20,4 @@ wheels/
 /solution/data/external/cultpass.db*
 /solution/data/core/chroma_db/
 /solution/data/core/workflow_memory.sqlite3*
+/submission-review.zip
